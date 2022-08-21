@@ -1,31 +1,34 @@
 import React from "react";
-
-const Home = () => {
-  return (
-    <>
-      <h2>Ultimos lancamentos</h2>
-      <div className="card">
-        <div className="thumb">
-          <img src="imagens/capas/9788575228142.jpg" alt="" />
+import { Link } from "react-router-dom";
+const Home = ({ livros }) => (
+  <main className="principal">
+    <h2>Últimos lançamentos</h2>
+    {livros
+      .filter((n, index) => index < 6)
+      .map((livro) => (
+        <div className="card" key={livro.id}>
+          <div className="thumb">
+            <img
+              src={"/imagens/capas/" + livro.isbn.replace(/-/g, "") + ".jpg"}
+              alt="Thumbnail da capa do livro ..."
+            />
+          </div>
+          {livros
+            .filter((c) => c.slug === livro.slug)
+            .map((livro) => (
+              <Link to={`/livro/${livro.slug}`} key={livro.id}>
+                {
+                  <div className="detalhes">
+                    <h3>{livro.titulo}</h3>
+                    <p>{livro.descricao.slice(0, 130) + "..."}</p>
+                    <p>Leia mais &gt;</p>
+                  </div>
+                }
+              </Link>
+            ))}
         </div>
-        <div className="detalhes">
-          <h3>Padroes para Kubernets</h3>
-          <p>O modo com os ...</p>
-          <a href="#">Leia mais &gt;</a>
-        </div>
-      </div>
-      <div className="card">
-        <div className="thumb">
-          <img src="imagens/capas/9788575228074.jpg" alt="" />
-        </div>
-        <div className="detalhes">
-          <h3>Introducao ao Pentest ...</h3>
-          <p>O modo com os ...</p>
-          <a href="#">Leia mais &gt;</a>
-        </div>
-      </div>
-    </>
-  );
-};
+      ))}
+  </main>
+);
 
 export default Home;
